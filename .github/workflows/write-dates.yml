@@ -1,0 +1,28 @@
+name: Writing Dates
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron '* 1 * * *'
+jobs:
+  write-dates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Write date
+        run: |
+          echo "Today is $(date)" >> dates.txt
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: ${{ github.actor }}
+          author_email: ${{ github.actor }}@users.noreply.github.com
+          message: "Update dates.txt"
+      - name: Push changes
+        uses:
+          EndBug/git-push@v7
+        with:
+          branch: ${{ github.ref }}
+          force: true
