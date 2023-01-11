@@ -56,3 +56,14 @@ Working on this [link](https://docs.github.com/en/actions/quickstart)
             - run: echo "🍏 This job's status is ${{ job.status }}."
     ```
 4. Committing the workflow file to a branch in your repository triggers the push event and runs your workflow.
+
+## Understanding the worflow file
+1. `name: GitHub Actions Demo` is the name of the workflow as it will appear in the "Actions" tab of the GitHub repository.
+2. `run-name: ${{ github.actor }} is testing out GitHub Actions 🚀` is the name for workflow runs generated from the workflow, which will appear in the list of workflow runs on your repository's `Actions` tab. This example uses an expression with the `github` context to display the username of the actor that triggered the workflow run.
+3. `on: [push]`. It specifies the trigger for this workflow. This example uses the push event, so a workflow run is triggered every time someone pushes a change to the repository or merges a pull request.
+4. `jobs:` groups together all the jobs that run in the `GitHub Actions Demo` workflow.
+5. `Explore-GitHub-Actions:`. Defines a job named `Explore-GitHub-Actions`
+. The child keys will define properties of the job.
+6. `runs-on: ubuntu-latest`. Configures the job to run on the latest version of an Ubuntu Linux runner. This means that the job will execute on a fresh virtual machine hosted by GitHub
+7. `steps`. Groups together all the steps that run in the `Explore-Github-Actions` job. Each item under this section is a separate action or shell script.
+8. `uses: actions/checkout@v3`. The uses keyword specifies that this step will run v3 of the actions/checkout action. This is an action that checks out your repository onto the runner, allowing you to run scripts or other actions against your code (such as build and test tools). You should use the checkout action any time your workflow will run against the repository's code.
