@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron '* 1 * * *'
+    - cron: '* 1 * * *'
 jobs:
   write-dates:
     runs-on: ubuntu-latest
