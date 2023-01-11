@@ -15,14 +15,12 @@ jobs:
         run: |
           python src/script.py >> dates.txt
       - name: Commit changes
-        uses: EndBug/add-and-commit@v7
+        run: |
+          git config --local user.email "encinaesteban27@gmail.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Updating dates"
+      - uses: ad-m/github-push-action@master
         with:
-          author_name: ${{ github.actor }}
-          author_email: ${{ github.actor }}@users.noreply.github.com
-          message: "Update dates.txt"
-      - name: Push changes
-        uses:
-          EndBug/git-push@v7
-        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-          force: true
