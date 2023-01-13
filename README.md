@@ -167,3 +167,18 @@ jobs:
 
 # Triggering a workflow
 Working following this [tutorial](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows).
+
+
+
+# ML project
+I'll use this [dataset](https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset?resource=download&select=UCI_Credit_Card.csv) to train a model and deploy it using GitHub Actions.
+## Enviroment
+I'll create a virtual enviroment using `conda` and `requirements.txt` file.
+```
+conda create --name github-actions-project python=3.9
+conda activate github-actions-project
+pip install -r requirements.txt
+```
+
+## EDA part
+I'll use this [notebook](notebooks/notebook.ipynb) to explore the dataset.
