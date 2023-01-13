@@ -67,3 +67,103 @@ Working on this [link](https://docs.github.com/en/actions/quickstart)
 6. `runs-on: ubuntu-latest`. Configures the job to run on the latest version of an Ubuntu Linux runner. This means that the job will execute on a fresh virtual machine hosted by GitHub
 7. `steps`. Groups together all the steps that run in the `Explore-Github-Actions` job. Each item under this section is a separate action or shell script.
 8. `uses: actions/checkout@v3`. The uses keyword specifies that this step will run v3 of the actions/checkout action. This is an action that checks out your repository onto the runner, allowing you to run scripts or other actions against your code (such as build and test tools). You should use the checkout action any time your workflow will run against the repository's code.
+
+# Building and Testing Python
+You can create a continuous integration (CI) workflow to build and test your Python project.
+## Python Starter workflow
+Working following this [tutorial](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python).
+
+## Trying something by my own.
+I have written a python script named `src/script.py`. This script invokes `datetime.now()` function and save it into a `.txt` file called [dates.txt](dates.txt).
+
+I have created a workflow file named [Write Dates Workflow](.github/workflows/write-dates.yml).
+
+The workflow file is as follows:
+```
+name: Writing Dates
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '* 1/6 * * *'
+jobs:
+  write-dates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          ## Setting Python version equal to 3.9
+          python-version: '3.9'
+          ## Setting architecture equal to x64
+          architecture: 'x64' 
+      - name: Write date
+        run: |
+          python src/script.py >> dates.txt
+      - name: Commit changes
+        run: |
+          git config --local user.email "encinaesteban27@gmail.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Updating dates"
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+```
+## Analize the workflow
+1. `name: Writing Dates` is the name of the workflow as it will appear in the "Actions" tab of the GitHub repository.
+2. It will trigger on `push` on the `main` branch and also on a schedule using crontab. `* 1/6 * * *` means `at every minute past every 6th hour from 1 through 23`.
+  ```
+  on:
+    push:
+      branches:
+        - main
+    schedule:
+      - cron: '* 1/6 * * *'
+  ```
+3. `jobs:` groups together all the jobs that run in the `Writing Dates` workflow. `write-dates` is the job name. It will run on an ubuntu machine.
+4. We will use this repository, so we have to use `actions/checkout@v3`.
+```
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+```
+5. We will use Python 3.9, so we have to use `actions/setup-python@v4`.
+```
+    steps:
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          ## Setting Python version equal to 3.9
+          python-version: '3.9'
+          ## Setting architecture equal to x64
+          architecture: 'x64' 
+```
+6. We will run the script `src/script.py` and save the output into `dates.txt`.
+```
+    steps:
+      - name: Write date
+        run: |
+          python src/script.py >> dates.txt
+```
+7. We will commit the changes and push them to the repository.
+  ```
+      steps:
+        - name: Commit changes
+          run: |
+            git config --local user.email "
+            git config --local user.name "github-actions[bot]"
+            git add .
+            git commit -m "Updating dates"
+        - uses: ad-m/github-push-action@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: ${{ github.ref }}
+  ```
+
+# Triggering a workflow
+Working following this [tutorial](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows).
