@@ -1,7 +1,7 @@
 name: Testing data
 on: [push, pull_request]
 jobs:
-  testing-api:
+  testing-data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
