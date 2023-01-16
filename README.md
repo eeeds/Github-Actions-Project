@@ -182,3 +182,33 @@ pip install -r requirements.txt
 
 ## EDA part
 I'll use this [notebook](notebooks/notebook.ipynb) to explore the dataset.
+
+The model didn't perform very well, but I'll use it anyways for this project.
+## Tests
+I'll create a test to check if the dataset is loaded correctly. 
+I created the test [here](tests/test_df.py) using `pytest` library.
+# Testing-Workflow
+I'll create a workflow to test the model. The workflow will be triggered on every push and pull request to the repository.
+
+The workflow file is as follows:
+```
+name: Testing data
+on: [push, pull_request]
+jobs:
+  testing-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+      - name: Creating and activating virtualenv
+        run: |
+          pip3 install virtualenv
+          virtualenv venv
+          source venv/bin/activate
+      - name: Installing dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Testing training
+        run: |
+          pytest tests/test_df.py
+```
