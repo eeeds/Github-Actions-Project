@@ -212,3 +212,65 @@ jobs:
         run: |
           pytest tests/test_df.py
 ```
+# Linters
+I'll use `Pylint` and `black` to lint my code.
+## Pylint
+Pylint is a static code analyser for Python 2 or 3. The latest version supports Python 3.7.2 and above.
+
+Pylint analyses your code without actually running it. It checks for errors, enforces a coding standard, looks for code smells, and can make suggestions about how the code could be refactored. Pylint can infer actual values from your code using its internal code representation (astroid). If your code is import logging as argparse, Pylint will know that argparse.error(...) is in fact a logging call and not an argparse call.
+
+Pylint is highly configurable and permits to write plugins in order to add your own checks (for example, for internal libraries or an internal rule). Pylint also has an ecosystem of existing plugins for popular frameworks and third party libraries.
+
+[See more](https://pylint.pycqa.org/en/latest/)
+
+## Install Pylint
+```
+pip install pylint
+```
+## Run Pylint
+```
+pylint src/script.py
+```
+## Black
+Black is the uncompromising Python code formatter. By using it, you agree to cede control over minutiae of hand-formatting. In return, Black gives you speed, determinism, and freedom from pycodestyle nagging about formatting. You will save time and mental energy for more important matters.
+
+[See more](https://black.readthedocs.io/en/stable/)
+
+## Install Black
+```
+pip install black
+```
+## Run Black
+```
+black src/script.py
+```
+
+# Linters-Workflow
+I'll create a workflow to lint my code. The workflow will be triggered on every push and pull request to the repository.
+
+The workflow file is as follows:
+```
+name: Linters
+on: [push, pull_request]
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+      - name: Creating and activating virtualenv
+        run: |
+          pip3 install virtualenv
+          virtualenv venv
+          source venv/bin/activate
+      - name: Installing dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Linting with black
+        run: |
+          black src/script.py
+      - name: Linting with pylint
+        run: |
+          pylint src/script.py
+```

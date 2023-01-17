@@ -3,3 +3,5 @@ seaborn
 matplotlib
 sklearn
 pytest
+pylint
+black
