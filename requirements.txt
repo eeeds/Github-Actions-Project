@@ -5,3 +5,4 @@ sklearn
 pytest
 pylint
 black
+flake8
