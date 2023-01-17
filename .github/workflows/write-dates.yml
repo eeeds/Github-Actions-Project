@@ -6,6 +6,23 @@ on:
   schedule:
     - cron: '* 1/6 * * *'
 jobs:
+  run-linters:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+    - name: Installing dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Run linters
+      uses: wearerequired/lint-action@v2
+      with:
+        black: true
+        flake8: true
   write-dates:
     runs-on: ubuntu-latest
     steps:
